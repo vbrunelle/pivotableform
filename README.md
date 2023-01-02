@@ -153,7 +153,7 @@ Pull requests are welcome! Here are some [Contribution Guidelines](https://githu
 Please first check the [Frequently Asked Questions](https://github.com/nicolaskruchten/pivottable/wiki/Frequently-Asked-Questions) and if you can't find what you're looking for there, or in the [wiki](https://github.com/nicolaskruchten/pivottable/wiki), then please [create a GitHub Issue](https://github.com/nicolaskruchten/pivottable/issues/new). When creating an issue, please try to provide a replicable test case so that others can more easily help you. Please do not email the author directly, as you will just be asked to create a Github Issue :)
 
 ## Copyright & Licence (MIT License)
-
+Pivotableform is © 2023 Vincent Brunelle and other contributors, using codes from PivotTable.js.
 PivotTable.js is © 2012-2016 Nicolas Kruchten, Datacratic, other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
