@@ -1,5 +1,9 @@
 [![npm](https://pivottable.js.org/images/npm.svg)](https://www.npmjs.com/package/pivottable) [![cdnjs](https://pivottable.js.org/images/cdnjs.svg)](https://cdnjs.com/libraries/pivottable) [![tests](https://pivottable.js.org/images/tests.svg)](https://pivottable.js.org/tests/) [![license](https://pivottable.js.org/images/license.svg)](https://github.com/nicolaskruchten/pivottable/blob/master/LICENSE.md)
 
+# Pivotableform.js
+Allows a user to pivot the form in which they want to put their data in. Once the data is entered, it can be produced into a .json that can be used by the website's framework. 
+
+This project is basically a set of feature built on top of [Nicolas Kruchten](http://nicolas.kruchten.com)'s awesome [PivotTable.js](https://github.com/nicolaskruchten/pivottable) project. 
 
 # PivotTable.js
 
