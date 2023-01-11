@@ -6,7 +6,6 @@ callWithJQuery = (pivotModule) ->
     # Plain browser env
     else
         pivotModule jQuery
-
 callWithJQuery ($) ->
 
     ###
@@ -552,11 +551,19 @@ callWithJQuery ($) ->
                 val = aggregator.value()
                 td = document.createElement("td")
                 td.className = "pvtVal row#{i} col#{j}"
-                td.textContent = aggregator.format(val)
+                #td.textContent = aggregator.format(val)
                 td.setAttribute("data-value", val)
                 if getClickHandler?
                     td.onclick = getClickHandler(val, rowKey, colKey)
-                tr.appendChild td
+                ic = document.createElement("input")
+                ic.classList.add("NumericInputCell")
+                ic.type = "number"
+                ic.value = aggregator.format(val)
+
+                ic.addEventListener("keypress",
+                    (event) -> this.blur() if event.key == "Enter")
+                td.appendChild(ic)
+                tr.appendChild(td)
 
             if opts.table.rowTotals || colAttrs.length == 0
                 totalAggregator = pivotData.getAggregator(rowKey, [])
