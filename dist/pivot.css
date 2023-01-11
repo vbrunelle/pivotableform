@@ -1,37 +1,3 @@
-
-Skip to content
-Pull requests
-Issues
-Codespaces
-Marketplace
-Explore
-@vbrunelle
-vbrunelle /
-pivotableform
-Public
-forked from nicolaskruchten/pivottable
-
-Cannot fork because you own this repository and are not a member of any organizations.
-
-Code
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-
-    Settings
-
-pivotableform/dist/pivot.css
-@vbrunelle
-vbrunelle Changed data cells content to modifiable content using invisible inpu…
-Latest commit 6228385 Jan 2, 2023
-History
-2 contributors
-@nicolaskruchten
-@vbrunelle
-124 lines (106 sloc) 2.72 KB
 .pvtUi { color: #333; }
 
 
@@ -156,20 +122,3 @@ table.pvtTable tbody tr td {
 .pvtCheckContainer p{ margin: 5px; }
 
 .pvtRendererArea { padding: 5px;}
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
-
-pivotableform/pivot.css at inputtable · vbrunelle/pivotableform
