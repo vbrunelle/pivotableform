@@ -388,6 +388,10 @@ callWithJQuery ($) ->
 
         getColKeys: () =>
             @sortKeys()
+            console.log("here are the colAttrs:")
+            console.log(@colAttrs)
+            console.log("here are the colkeys (content of colAttrs):")
+            console.log(@colKeys)
             return @colKeys
 
         getRowKeys: () =>
@@ -556,6 +560,7 @@ callWithJQuery ($) ->
                 td = document.createElement("td")
                 td.className = "pvtVal row#{i} col#{j}"
                 #td.textContent = aggregator.format(val)
+                td.textContent = 'DEBUG: (' + rowAttrs + ', ' + colAttrs + ') = (' + rowKey + ', ' + colKey + ')'
                 td.setAttribute("data-value", val)
                 if getClickHandler?
                     td.onclick = getClickHandler(val, rowKey, colKey)
