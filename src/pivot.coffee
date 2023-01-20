@@ -463,6 +463,10 @@ callWithJQuery ($) ->
         rowAttrs = pivotData.rowAttrs
         rowKeys = pivotData.getRowKeys()
         colKeys = pivotData.getColKeys()
+        recordKeyHeader = rowAttrs.concat(colAttrs)
+        console.log('recordKeyHeader is:')
+        console.log(recordKeyHeader)
+        formValues = {}
 
         if opts.table.clickCallback
             getClickHandler = (value, rowValues, colValues) ->
@@ -560,7 +564,9 @@ callWithJQuery ($) ->
                 td = document.createElement("td")
                 td.className = "pvtVal row#{i} col#{j}"
                 #td.textContent = aggregator.format(val)
-                td.textContent = 'DEBUG: (' + rowAttrs + ', ' + colAttrs + ') = (' + rowKey + ', ' + colKey + ')'
+                td.textContent = 'DEBUG1: (' + rowAttrs + ', ' + colAttrs + ') = (' + rowKey + ', ' + colKey + ')'
+                recordKey = rowKey.concat(colKey)
+                td.textContent = 'DEBUG2: recordKey = (' + recordKey + ')'
                 td.setAttribute("data-value", val)
                 if getClickHandler?
                     td.onclick = getClickHandler(val, rowKey, colKey)
@@ -568,7 +574,8 @@ callWithJQuery ($) ->
                 ic.classList.add("NumericInputCell")
                 ic.type = "number"
                 ic.value = aggregator.format(val)
-
+                #TODO: modifier les données dans la formValues lorsque celles-ci sont modifiées
+                formValues[recordKey] = ic.value
                 ic.addEventListener("keypress",
                     (event) -> this.blur() if event.key == "Enter")
                 td.appendChild(ic)
@@ -623,6 +630,8 @@ callWithJQuery ($) ->
         #squirrel this away for later
         result.setAttribute("data-numrows", rowKeys.length)
         result.setAttribute("data-numcols", colKeys.length)
+
+        console.log(formValues)
 
         return result
 
