@@ -325,10 +325,14 @@ callWithJQuery ($) ->
                 @processRecord(record) if @filter(record)
 
         #can handle arrays or jQuery selections of tables
+        # Apply a function f to each element of an array input.
         @forEachRecord = (input, derivedAttributes, f) ->
             if $.isEmptyObject derivedAttributes
+                # If derivedAttributes is empty, use function f as the function to add the record
                 addRecord = f
             else
+                # If derivedAttributes is non empty, split record as a derived attribute, then  apply function f to
+                # record.
                 addRecord = (record) ->
                     record[k] = v(record) ? record[k] for k, v of derivedAttributes
                     f(record)
@@ -336,7 +340,7 @@ callWithJQuery ($) ->
             #if it's a function, have it call us back
             if $.isFunction(input)
                 input(addRecord)
-            else if $.isArray(input)
+            else if $.isArray(input) # input is an array
                 if $.isArray(input[0]) #array of arrays
                     for own i, compactRecord of input when i > 0
                         record = {}
@@ -619,8 +623,10 @@ callWithJQuery ($) ->
 
     ###
     Pivot Table core: create PivotData object and call Renderer on it
+        input:     the data
+        inputOpts: What to show in rows and colums
+        locale: Decides the locale. If not provided, set to English.
     ###
-
     $.fn.pivot = (input, inputOpts, locale="en") ->
         locale = "en" if not locales[locale]?
         defaults =
@@ -638,13 +644,17 @@ callWithJQuery ($) ->
         localeDefaults =
             rendererOptions: {localeStrings}
             localeStrings: localeStrings
-
+        
+        # opts becomes a mix between localeDefaults, defaults, and inputOpts
         opts = $.extend(true, {}, localeDefaults, $.extend({}, defaults, inputOpts))
 
         result = null
         try
+            # Create PivotData object from specified dataClass in locale or in default, using input data and opts
+            # options as arguments.
             pivotData = new opts.dataClass(input, opts)
             try
+                # Try rendering the data
                 result = opts.renderer(pivotData, opts.rendererOptions)
             catch e
                 console.error(e.stack) if console?
