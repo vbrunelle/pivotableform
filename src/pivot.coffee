@@ -295,6 +295,40 @@ callWithJQuery ($) ->
                 return sorters[attr]
         return naturalSort
 
+    class RecordMap
+        constructor: (indexCols, valueCol) ->
+            @indexCols = indexCols
+            if valueCol?
+                @valueCol = valueCol
+            else
+                @valueCol = 'value'
+            @header = @indexCols.concat(@valueCol)
+            @recordKeys = {}
+            @recordVals = {}
+
+        addRecordWithCoordinates: (coordinates, value) ->
+            @recordKeys[coordinates] = coordinates
+            @recordVals[coordinates] = value
+
+        tablify: () ->
+            #Merges keys and value into one big table
+            df = {}
+            for r of @recordKeys
+                dr = @recordKeys[r].concat(@recordVals[r])
+                df[r] = dr
+            return df
+        
+        jsonify: () ->
+            #Produces a json string of the data content
+            df = {}
+            t = @tablify()
+            for h in [0..@header.length - 1]
+                dc = []
+                for r of @recordKeys
+                    dc.push(t[r][h])
+                df[@header[h]] = dc
+            return JSON.stringify(df)
+
     ###
     Data Model class
     ###
@@ -319,6 +353,10 @@ callWithJQuery ($) ->
             @colTotals = {}
             @allTotal = @aggregator(this, [], [])
             @sorted = false
+            console.log('test')
+            console.log(opts)
+            #TODO: chercher à importer les valeurs des filtres
+            console.log('fin test')
 
             # iterate through input, accumulating data for cells
             PivotData.forEachRecord @input, @derivedAttributes, (record) =>
@@ -388,10 +426,6 @@ callWithJQuery ($) ->
 
         getColKeys: () =>
             @sortKeys()
-            console.log("here are the colAttrs:")
-            console.log(@colAttrs)
-            console.log("here are the colkeys (content of colAttrs):")
-            console.log(@colKeys)
             return @colKeys
 
         getRowKeys: () =>
@@ -464,9 +498,7 @@ callWithJQuery ($) ->
         rowKeys = pivotData.getRowKeys()
         colKeys = pivotData.getColKeys()
         recordKeyHeader = rowAttrs.concat(colAttrs)
-        console.log('recordKeyHeader is:')
-        console.log(recordKeyHeader)
-        formValues = {}
+        formValues = new RecordMap(recordKeyHeader)
 
         if opts.table.clickCallback
             getClickHandler = (value, rowValues, colValues) ->
@@ -543,7 +575,6 @@ callWithJQuery ($) ->
             tr.appendChild th
             thead.appendChild tr
         result.appendChild thead
-
         #now the actual data rows, with their row headers and totals
         tbody = document.createElement("tbody")
         for own i, rowKey of rowKeys
@@ -563,10 +594,8 @@ callWithJQuery ($) ->
                 val = aggregator.value()
                 td = document.createElement("td")
                 td.className = "pvtVal row#{i} col#{j}"
-                #td.textContent = aggregator.format(val)
-                td.textContent = 'DEBUG1: (' + rowAttrs + ', ' + colAttrs + ') = (' + rowKey + ', ' + colKey + ')'
-                recordKey = rowKey.concat(colKey)
-                td.textContent = 'DEBUG2: recordKey = (' + recordKey + ')'
+                recordCoordinates = rowKey.concat(colKey)
+                #td.textContent = 'DEBUG2: recordCoordinates = (' + recordCoordinates + ')'
                 td.setAttribute("data-value", val)
                 if getClickHandler?
                     td.onclick = getClickHandler(val, rowKey, colKey)
@@ -574,8 +603,11 @@ callWithJQuery ($) ->
                 ic.classList.add("NumericInputCell")
                 ic.type = "number"
                 ic.value = aggregator.format(val)
-                #TODO: modifier les données dans la formValues lorsque celles-ci sont modifiées
-                formValues[recordKey] = ic.value
+                #TODO: modifier les données dans la formValues lorsque celles-ci sont modifiée dans la vue
+                #Pour y arriver, on peut utiliser le déclencheur onchange sur chaque input tel que dans https://www.w3schools.com/jsref/event_onchange.asp
+                    #Nécéssite une fonction lancée par le déclencheur qui permet de modifier la valeur dasn le formValues
+                        #Probablement que cette fonction pourrait être une méthode setValue de l'objet formValues
+                formValues.addRecordWithCoordinates(recordCoordinates, ic.value)
                 ic.addEventListener("keypress",
                     (event) -> this.blur() if event.key == "Enter")
                 td.appendChild(ic)
@@ -631,8 +663,11 @@ callWithJQuery ($) ->
         result.setAttribute("data-numrows", rowKeys.length)
         result.setAttribute("data-numcols", colKeys.length)
 
-        console.log(formValues)
+        console.log('stringifying as json...')
+        console.log(formValues.jsonify())
 
+        #TODO: Sinon, il faudrait commencer à penser à un bouton pour exporter les données en JSON.
+            #TODO: Penser à faire un bouton en HTML.
         return result
 
     ###
