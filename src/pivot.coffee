@@ -299,14 +299,14 @@ callWithJQuery ($) ->
         constructor: (indexCols, valueCol) ->
             @indexCols = indexCols
             if valueCol?
-                @valueCol = valueCol
+                 @valueCol = valueCol
             else
                 @valueCol = 'value'
             @header = @indexCols.concat(@valueCol)
             @recordKeys = {}
             @recordVals = {}
 
-        addRecordWithCoordinates: (coordinates, value) ->
+        setRecordWithCoordinates: (coordinates, value) ->
             @recordKeys[coordinates] = coordinates
             @recordVals[coordinates] = value
 
@@ -328,6 +328,7 @@ callWithJQuery ($) ->
                     dc.push(t[r][h])
                 df[@header[h]] = dc
             return JSON.stringify(df)
+        #TODO: Faire un bouton qui permet d'appeller cette fonction directement
 
     ###
     Data Model class
@@ -500,6 +501,17 @@ callWithJQuery ($) ->
         recordKeyHeader = rowAttrs.concat(colAttrs)
         formValues = new RecordMap(recordKeyHeader)
 
+            # Define a function to handle the onchange event
+        handleCellChange = (event) ->
+            cell = event.target
+            coordinates = cell.coordinates
+            console.log "Cell (" + coordinates + ") value changed to: " + cell.value
+            formValues.setRecordWithCoordinates(coordinates, cell.value)
+            console.log(formValues)
+        #TODO: s'assurer que les valeurs dans le formvalues soient utilisées comme input lorsqu'on modifie les contenu des lignes et des colonnes
+            #Aller consulter à propos de danfo qui serait un clône de Pandas mais en javascript basé sur tensorflow. https://danfo.jsdata.org/
+        
+
         if opts.table.clickCallback
             getClickHandler = (value, rowValues, colValues) ->
                 filters = {}
@@ -603,13 +615,12 @@ callWithJQuery ($) ->
                 ic.classList.add("NumericInputCell")
                 ic.type = "number"
                 ic.value = aggregator.format(val)
-                #TODO: modifier les données dans la formValues lorsque celles-ci sont modifiée dans la vue
-                #Pour y arriver, on peut utiliser le déclencheur onchange sur chaque input tel que dans https://www.w3schools.com/jsref/event_onchange.asp
-                    #Nécéssite une fonction lancée par le déclencheur qui permet de modifier la valeur dasn le formValues
-                        #Probablement que cette fonction pourrait être une méthode setValue de l'objet formValues
-                formValues.addRecordWithCoordinates(recordCoordinates, ic.value)
+                ic.coordinates = recordCoordinates
+                console.log(ic.coordinates)
+                formValues.setRecordWithCoordinates(recordCoordinates, ic.value)
                 ic.addEventListener("keypress",
                     (event) -> this.blur() if event.key == "Enter")
+                ic.addEventListener("change", handleCellChange) #Modify data in formValue when changed
                 td.appendChild(ic)
                 tr.appendChild(td)
 
