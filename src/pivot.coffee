@@ -317,7 +317,7 @@ callWithJQuery ($) ->
                 dr = @recordKeys[r].concat(@recordVals[r])
                 df[r] = dr
             return df
-        
+
         jsonify: () ->
             #Produces a json string of the data content
             df = {}
@@ -354,10 +354,7 @@ callWithJQuery ($) ->
             @colTotals = {}
             @allTotal = @aggregator(this, [], [])
             @sorted = false
-            console.log('test')
-            console.log(opts)
             #TODO: chercher à importer les valeurs des filtres
-            console.log('fin test')
 
             # iterate through input, accumulating data for cells
             PivotData.forEachRecord @input, @derivedAttributes, (record) =>
@@ -507,10 +504,9 @@ callWithJQuery ($) ->
             coordinates = cell.coordinates
             console.log "Cell (" + coordinates + ") value changed to: " + cell.value
             formValues.setRecordWithCoordinates(coordinates, cell.value)
-            console.log(formValues)
-        #TODO: s'assurer que les valeurs dans le formvalues soient utilisées comme input lorsqu'on modifie les contenu des lignes et des colonnes
+            #TODO: s'assurer que les valeurs dans le formvalues soient utilisées comme input lorsqu'on modifie les contenu des lignes et des colonnes
             #Aller consulter à propos de danfo qui serait un clône de Pandas mais en javascript basé sur tensorflow. https://danfo.jsdata.org/
-        
+
 
         if opts.table.clickCallback
             getClickHandler = (value, rowValues, colValues) ->
@@ -616,7 +612,6 @@ callWithJQuery ($) ->
                 ic.type = "number"
                 ic.value = aggregator.format(val)
                 ic.coordinates = recordCoordinates
-                console.log(ic.coordinates)
                 formValues.setRecordWithCoordinates(recordCoordinates, ic.value)
                 ic.addEventListener("keypress",
                     (event) -> this.blur() if event.key == "Enter")
@@ -674,11 +669,8 @@ callWithJQuery ($) ->
         result.setAttribute("data-numrows", rowKeys.length)
         result.setAttribute("data-numcols", colKeys.length)
 
-        console.log('stringifying as json...')
-        console.log(formValues.jsonify())
-
-        #TODO: Sinon, il faudrait commencer à penser à un bouton pour exporter les données en JSON.
-            #TODO: Penser à faire un bouton en HTML.
+        #make this pvtTable remember the recordMap for later uses:
+        result.recordMap = formValues
         return result
 
     ###
@@ -704,7 +696,7 @@ callWithJQuery ($) ->
         localeDefaults =
             rendererOptions: {localeStrings}
             localeStrings: localeStrings
-        
+
         # opts becomes a mix between localeDefaults, defaults, and inputOpts
         opts = $.extend(true, {}, localeDefaults, $.extend({}, defaults, inputOpts))
 
@@ -1079,7 +1071,10 @@ callWithJQuery ($) ->
                         return false if ""+(record[k] ? 'null') in excludedItems
                     return true
 
-                pivotTable.pivot(materializedInput,subopts)
+                #Create a pivot object and store it so it can be reused later:
+                pvtTable = pivotTable.pivot(materializedInput,subopts)
+                #add the RecordMap object as an attribute that can be called:
+                this[0].recordMap = pvtTable[0].querySelector('.pvtTable').recordMap
                 pivotUIOptions = $.extend {}, opts,
                     cols: subopts.cols
                     rows: subopts.rows

@@ -1,44 +1,67 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Pivot Demo</title>
-        <!-- external libs from cdnjs -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<head>
+    <title>Pivot Demo</title>
+    <!-- external libs from cdnjs -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
-        <!-- PivotTable.js libs from ../dist -->
-        <link rel="stylesheet" type="text/css" href="../dist/pivot.css">
-        <script type="text/javascript" src="../src/pivot.js"></script>
-        <style>
-            body {font-family: Verdana;}
-        </style>
+    <!-- PivotTable.js libs from ../dist -->
+    <link rel="stylesheet" type="text/css" href="../dist/pivot.css">
+    <script type="text/javascript" src="../src/pivot.js"></script>
+    <style>
+        body {
+            font-family: Verdana;
+        }
+    </style>
 
-        <!-- optional: mobile support with jqueryui-touch-punch -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <!-- optional: mobile support with jqueryui-touch-punch -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 
-        <!-- for examples only! script to show code to user -->
-        <!--<script type="text/javascript" src="show_code.js"></script>-->
-    </head>
-    <body>
-        <script type="text/javascript">
-    // This example is the most basic usage of pivotUI()
+    <!-- for examples only! script to show code to user -->
+    <!--<script type="text/javascript" src="show_code.js"></script>-->
+</head>
+<body>
+<div id="myDiv"></div>
+<script type="text/javascript">
+    var callAPivotUI;
+    callAPivotUI = function (outputElement, input, inputOpts, overwrite = false, locale = "en") {
+        var pui, pForm, submitButton, myDiv;
+        pForm = $("<form></form>");
+        pui = $("<div></div>").pivotUI(input, inputOpts, overwrite, locale)[0];
+        pForm.append(pui);
 
-    $(function(){
-        $("#output").pivotUI(
-            [
-                {color: "blue", shape: "circle", letter: "a"},
-                {color: "red", shape: "triangle", letter:"b"},
-                {color: "yellow", shape: "triangle", letter: "c"}
-            ],
-            {
-                rows: ["color"],
-                cols: ["shape"]
-            }
-        );
-     });
-        </script>
+        submitButton = $("<input type='submit' value='Submit'>");
+        pForm.append(submitButton);
+        pForm.submit(function (event) {
+            var json;
+            event.preventDefault(); // empêche le formulaire d'être soumis normalement
+            json = pui.recordMap.jsonify();
+            return alert("String " + json + " was returned!");
+        });
 
-        <div id="output" style="margin: 30px;"></div>
+        myDiv = document.querySelector(outputElement);
+        myDiv.appendChild(pForm[0]);
+        return pui;
+    };
+    callAPivotUI(
+        "#myDiv",
+        [
+            {color: "blue", shape: "circle", letter: "a"},
+            {color: "red", shape: "triangle", letter: "b"},
+            {color: "yellow", shape: "triangle", letter: "c"}
+        ],
+        {
+            rows: ["color"],
+            cols: ["shape"]
+        }
+    );
+</script>
 
-    </body>
+<div id="output1" style="margin: 30px;"></div>
+<div id="output2" style="margin: 30px;"></div>
+
+</body>
 </html>
