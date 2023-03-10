@@ -890,14 +890,14 @@ callWithJQuery ($) ->
 
                     closeFilterBox = ->
                         if valueList.find("[type='checkbox']").length >
-                               valueList.find("[type='checkbox']:checked").length
+                            valueList.find("[type='checkbox']:checked").length
                                 attrElem.addClass "pvtFilteredAttribute"
-                            else
-                                attrElem.removeClass "pvtFilteredAttribute"
+                        else
+                            attrElem.removeClass "pvtFilteredAttribute"
 
-                            valueList.find('.pvtSearch').val('')
-                            valueList.find('.pvtCheckContainer p').show()
-                            valueList.hide()
+                        valueList.find('.pvtSearch').val('')
+                        valueList.find('.pvtCheckContainer p').show()
+                        valueList.hide()
 
                     finalButtons = $("<p>").appendTo(valueList)
 
