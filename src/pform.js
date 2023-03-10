@@ -1,5 +1,3 @@
-console.log("hello world");
-
 var callAPivotUI;
 callAPivotUI = function (outputElement, input, inputOpts, overwrite = false, locale = "en") {
     var pui, pForm, submitButton, myDiv;
