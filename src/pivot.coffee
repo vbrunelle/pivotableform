@@ -948,13 +948,35 @@ callWithJQuery ($) ->
             #renderer control
             rendererControl = $("<td>").addClass("pvtUiCell")
 
-            refreshRenderersList = (opts) ->
+            refreshRenderersList = (opts, initialSelectedOption=null) ->
                 renderer = $("<select>")
                     .addClass('pvtRenderer')
                     .appendTo(rendererControl)
                     .bind "change", -> refresh() #capture reference
                 for own x of opts.renderers
                     $("<option>").val(x).html(x).appendTo(renderer)
+
+                # Get the dropdown menu element by class name
+                dropdownMenu = renderer[0]
+
+                # Save the initial selected option
+                initialSelectedOption = dropdownMenu.value
+
+                # Bind an event handler to the dropdown menu
+                dropdownMenu.addEventListener 'change', ->
+                    # If the selected option is the one we're interested in, and the current text is "Edit mode", display the confirmation prompt
+                    if initialSelectedOption == 'Edit mode'
+                        # Ask the user if they really want to select the option
+                        confirmed = confirm('All changes will be lost. Are you sure you want to select this option?')
+                        # If the user confirmed, select the option
+                        if confirmed
+                             dropdownMenu.options[dropdownMenu.selectedIndex].selected = true
+                        # If the user cancelled, restore the initial selected option
+                        else
+                            dropdownMenu.value = initialSelectedOption
+                    # Update initialSelectedOption to reflect the most recent value of the dropdown
+                    initialSelectedOption = dropdownMenu.value
+
                 return renderer
             renderer = refreshRenderersList(opts)
 
@@ -1200,15 +1222,6 @@ callWithJQuery ($) ->
                         for attr in shownInAggregators
                             newDropdown.append($("<option>").val(attr).text(attr))
                         pvtVals.append(newDropdown)
-
-                if opts.renderers[renderer.val()].name == "Edit mode"
-                    for el, value of opts.renderers
-                        if el != "Edit mode"
-                            delete opts.renderers[el]
-                    elementToRemove = document.querySelector('.pvtRenderer')
-                    parentOfRenderer = elementToRemove.parentElement
-                    parentOfRenderer.removeChild(elementToRemove)
-                    renderer = refreshRenderersList(opts)
 
                 if initialRender
                     vals = opts.vals
