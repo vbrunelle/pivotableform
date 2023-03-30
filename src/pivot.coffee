@@ -965,6 +965,7 @@ callWithJQuery ($) ->
                 # Bind an event handler to the dropdown menu
                 dropdownMenu.addEventListener 'change', ->
                     # If the selected option is the one we're interested in, and the current text is "Edit mode", display the confirmation prompt
+                    sortables = $(dropdownMenu).closest(".pvtUi").find(".ui-sortable")
                     if initialSelectedOption == 'Edit mode'
                         # Ask the user if they really want to select the option
                         confirmed = confirm('All changes will be lost. Are you sure you want to select this option?')
@@ -974,6 +975,10 @@ callWithJQuery ($) ->
                         # If the user cancelled, restore the initial selected option
                         else
                             dropdownMenu.value = initialSelectedOption
+                        sortables.sortable("enable")
+                    # If the selection is set to 'Edit mode', then freeze the drag and drop elements
+                    else if dropdownMenu.value == 'Edit mode'
+                        sortables.sortable("disable")
                     # Update initialSelectedOption to reflect the most recent value of the dropdown
                     initialSelectedOption = dropdownMenu.value
 
