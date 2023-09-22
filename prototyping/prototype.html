@@ -3,8 +3,10 @@
 <head>
     <title>Pivot Demo</title>
     <!-- external libs from cdnjs -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
 
     <!-- PivotTable.js libs from ../dist -->
     <link rel="stylesheet" type="text/css" href="../dist/pivot.css">
@@ -29,13 +31,28 @@
     callAPivotUI(
         "#myDiv",
         [
-            {color: "blue", shape: "circle", letter: "a"},
-            {color: "red", shape: "triangle", letter: "b"},
-            {color: "yellow", shape: "triangle", letter: "c"}
+            {jour: "Lundi", shift: "AM", employe: "Steph", preference: 0},
+            {jour: "Lundi", shift: "PM", employe: "Steph", preference: 1},
+            {jour: "Lundi", shift: "SO", employe: "Steph", preference: 2},
+            {jour: "Lundi", shift: "AM", employe: "Vincent", preference: 3},
+            {jour: "Lundi", shift: "PM", employe: "Vincent", preference: 4},
+            {jour: "Lundi", shift: "SO", employe: "Vincent", preference: 5},
+            {jour: "Mardi", shift: "AM", employe: "Steph", preference: 6},
+            {jour: "Mardi", shift: "PM", employe: "Steph", preference: 7},
+            {jour: "Mardi", shift: "SO", employe: "Steph", preference: 8},
+            {jour: "Mardi", shift: "AM", employe: "Vincent", preference: 9},
+            {jour: "Mardi", shift: "PM", employe: "Vincent", preference: 10},
+            {jour: "Mardi", shift: "SO", employe: "Vincent", preference: 11},
+            {jour: "Mercredi", shift: "AM", employe: "Steph", preference: 12},
+            {jour: "Mercredi", shift: "PM", employe: "Steph", preference: 13},
+            {jour: "Mercredi", shift: "SO", employe: "Steph", preference: 14},
+            {jour: "Mercredi", shift: "AM", employe: "Vincent", preference: 15},
+            {jour: "Mercredi", shift: "PM", employe: "Vincent", preference: 16},
+            {jour: "Mercredi", shift: "SO", employe: "Vincent", preference: 17}
         ],
         {
-            rows: ["color"],
-            cols: ["shape"]
+            rows: ["shift", "employe"],
+            cols: ["jour"]
         }
     );
 </script>
