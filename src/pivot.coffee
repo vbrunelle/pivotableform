@@ -176,6 +176,7 @@ callWithJQuery ($) ->
         "Count as Fraction of Columns": tpl.fractionOf(tpl.count(), "col",   usFmtPct)
 
     renderers =
+        "Edit table":     (data, opts) ->   pivotFormRenderer(data, opts)
         "Table":          (data, opts) ->   pivotTableRenderer(data, opts)
         "Table Barchart": (data, opts) -> $(pivotTableRenderer(data, opts)).barchart()
         "Heatmap":        (data, opts) -> $(pivotTableRenderer(data, opts)).heatmap("heatmap",    opts)
