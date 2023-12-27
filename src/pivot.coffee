@@ -607,7 +607,7 @@ callWithJQuery ($) ->
                 ic = document.createElement("input")
                 ic.classList.add("NumericInputCell")
                 ic.type = "number"
-                ic.value = aggregator.format(val)
+                ic.value = val
                 ic.coordinates = recordCoordinates
                 formValues.setRecordWithCoordinates(recordCoordinates, ic.value)
                 ic.addEventListener("keypress",
