@@ -29,13 +29,28 @@
     callAPivotUI(
         "#myDiv",
         [
-            {color: "blue", shape: "circle", letter: "a"},
-            {color: "red", shape: "triangle", letter: "b"},
-            {color: "yellow", shape: "triangle", letter: "c"}
+            {jour: "Lundi", shift: "AM", employe: "Steph", preference: 0},
+            {jour: "Lundi", shift: "PM", employe: "Steph", preference: 1234},
+            {jour: "Lundi", shift: "SO", employe: "Steph", preference: 1.234},
+            {jour: "Lundi", shift: "AM", employe: "Vincent", preference: 12.1234},
+            {jour: "Lundi", shift: "PM", employe: "Vincent", preference: 123.1234},
+            {jour: "Lundi", shift: "SO", employe: "Vincent", preference: 1234.1234},
+            {jour: "Mardi", shift: "AM", employe: "Steph", preference: -123},
+            {jour: "Mardi", shift: "PM", employe: "Steph", preference: -1234},
+            {jour: "Mardi", shift: "SO", employe: "Steph", preference: 8},
+            {jour: "Mardi", shift: "AM", employe: "Vincent", preference: 9},
+            {jour: "Mardi", shift: "PM", employe: "Vincent", preference: 10},
+            {jour: "Mardi", shift: "SO", employe: "Vincent", preference: 11},
+            {jour: "Mercredi", shift: "AM", employe: "Steph", preference: 12},
+            {jour: "Mercredi", shift: "PM", employe: "Steph", preference: 13},
+            {jour: "Mercredi", shift: "SO", employe: "Steph", preference: 14},
+            {jour: "Mercredi", shift: "AM", employe: "Vincent", preference: 15},
+            {jour: "Mercredi", shift: "PM", employe: "Vincent", preference: 16},
+            {jour: "Mercredi", shift: "SO", employe: "Vincent", preference: 17}
         ],
         {
-            rows: ["color"],
-            cols: ["shape"]
+            rows: ["shift", "employe"],
+            cols: ["jour"]
         }
     );
 </script>
